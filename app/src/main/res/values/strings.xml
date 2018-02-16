@@ -2,4 +2,5 @@
     <string name="app_name">Geolocalizacion</string>
     <string name="iniciar_ruta">Iniciar Ruta</string>
     <string name="configurar_veh_culo">Configurar Vehículo</string>
+    <string name="configurar_ruta">Configurar Ruta</string>
 </resources>

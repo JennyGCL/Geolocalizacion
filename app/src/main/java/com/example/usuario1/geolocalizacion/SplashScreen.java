@@ -81,14 +81,9 @@ public class SplashScreen extends AppCompatActivity {
 
                 SplashScreen.this.startActivity(new Intent(SplashScreen.this,MainActivity.class));
 
-
-
-
                 SplashScreen.this.finish();
             }
         }).start(); // 3000 = 3seconds
-
-
 
     }
 }

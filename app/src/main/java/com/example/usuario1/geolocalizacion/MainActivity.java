@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
-    String datos;
+    String datos, precioGasolina, precioGasoleo, precioGasoleoPlus;
 
 
     @Override
@@ -30,24 +30,24 @@ public class MainActivity extends AppCompatActivity {
         String[] lines2 = null;
         int i = 0, cont = -1;
         while(i<lines.length){
-
             if(lines[i].contains("Precio gasolina")){
-                System.out.println(lines[i]);
                 resultado = lines[i];
             }
-
-            lines2 = resultado.split("<td>");
-            for (int b=0; b < lines2.length;b++){
-                System.out.println(lines2[b]);
-            }
-            //Pattern p = Pattern.compile("<strong>");
-            //Matcher m = p.matcher(lines[i].trim());
-            //if (m.find()){
-               // String bandera = (lines[i+1].trim().substring(14, ((lines[i+1].trim().length())-27)));
-               // String nombrePais = (lines[i+2].trim().substring(23, ((lines[i+2].trim().length())-5)));
-               // cont++;
-            //}
             i++;
         }
+        lines2 = resultado.split("\\<td\\>");
+        for (int b=0; b < lines2.length;b++){
+            System.out.println(lines2[b]);
+            if(lines2[b].contains("</strong> 95</td>")){
+                precioGasolina = lines2[b+1].substring(0,5);
+            }else if(lines2[b].contains("</strong> A</td>")){
+                precioGasoleo = lines2[b+1].substring(0,5);
+            }else if(lines2[b].contains("</strong> A+</td>")){
+                precioGasoleoPlus = lines2[b+1].substring(0,5);
+            }
+        }
+
+        System.out.println("Precio gasolina: "+precioGasolina+", Precio Gasoleo A: "+precioGasoleo+", Precio Gasoleo A+: "+precioGasoleoPlus);
     }
+
 }

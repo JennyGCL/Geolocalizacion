@@ -40,8 +40,9 @@ public class SplashScreen extends AppCompatActivity {
 
         }
 
-        //Wait for 3 seconds and start Activity Main
-        new Handler().postDelayed(new Runnable() {
+        //Hilo que descarga los precios de la página.
+        //Mientras tanto se ejecuta la animación hasta finalizar la descarga
+        new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -85,6 +86,9 @@ public class SplashScreen extends AppCompatActivity {
 
                 SplashScreen.this.finish();
             }
-        },10000); // 3000 = 3seconds
+        }).start(); // 3000 = 3seconds
+
+
+
     }
 }

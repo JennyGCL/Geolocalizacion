@@ -67,7 +67,6 @@ public class SplashScreen extends AppCompatActivity {
                 }
                 lines2 = resultado.split("\\<td\\>");
                 for (int b=0; b < lines2.length;b++){
-                    System.out.println(lines2[b]);
                     if(lines2[b].contains("</strong> 95</td>")){
                         precioGasolina = lines2[b+1].substring(0,5);
                     }else if(lines2[b].contains("</strong> A</td>")){
@@ -79,11 +78,16 @@ public class SplashScreen extends AppCompatActivity {
 
                 System.out.println("Precio gasolina: "+precioGasolina+", Precio Gasoleo A: "+precioGasoleo+", Precio Gasoleo A+: "+precioGasoleoPlus);
 
-                SplashScreen.this.startActivity(new Intent(SplashScreen.this,MainActivity.class));
+                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                intent.putExtra("gasolina", precioGasolina);
+                intent.putExtra("gasoleo", precioGasoleo);
+                intent.putExtra("gasoleoPlus", precioGasoleoPlus);
+                startActivity(intent);
+                //SplashScreen.this.startActivity(new Intent(SplashScreen.this,MainActivity.class));
 
                 SplashScreen.this.finish();
             }
-        }).start(); // 3000 = 3seconds
+        }).start();
 
     }
 }

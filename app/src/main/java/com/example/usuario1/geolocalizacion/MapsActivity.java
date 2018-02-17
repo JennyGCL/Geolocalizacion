@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double longitudInicial, latitudInicial;
     LocationListener locationListener;
     LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +36,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        if(Build.VERSION.SDK_INT >= 23){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 //si no lo tenemos lo pedimos
                 ActivityCompat.requestPermissions(this,
-                        new String [] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
             }
 
@@ -79,22 +81,89 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-        while(localizacionActual == null){
-
+        /*while (localizacionActual == null) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             localizacionActual = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             //  ultimaLocalizacion = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (localizacionActual != null){
-                latitudInicial =  localizacionActual.getLatitude();
+            if (localizacionActual != null) {
+                latitudInicial = localizacionActual.getLatitude();
                 longitudInicial = localizacionActual.getLongitude();
             }
-        }
-
-
+        }*/
     }
 
+    public void getLocation() {
+        try {
+            locationManager = (LocationManager) this
+                    .getSystemService(LOCATION_SERVICE);
 
+            // getting GPS status
+            boolean isGPSEnabled = locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+            boolean isNetworkEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                // no network provider is enabled
+            } else {
+                boolean canGetLocation = true;
+                if (isNetworkEnabled) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                    if (locationManager != null) {
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        localizacionActual = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (localizacionActual != null) {
+                            latitudInicial = localizacionActual.getLatitude();
+                            longitudInicial = localizacionActual.getLongitude();
+                        }
+                    }
+                }
+                // if GPS Enabled get lat/long using GPS Services
+                if (isGPSEnabled) {
+                    if (localizacionActual == null) {
+                        locationManager.requestLocationUpdates(
+                                LocationManager.GPS_PROVIDER,
+                                0,
+                                0, (LocationListener) this);
+                        Log.d("GPS", "GPS Enabled");
+                        if (locationManager != null) {
+                            localizacionActual = locationManager
+                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (localizacionActual != null) {
+                                latitudInicial = localizacionActual.getLatitude();
+                                longitudInicial = localizacionActual.getLongitude();
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.println(latitudInicial+"   "+longitudInicial);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -109,6 +178,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
+        getLocation();
         LatLng origen = new LatLng(localizacionActual.getLatitude(), localizacionActual.getLongitude());
         mMap.addMarker(new MarkerOptions().position(origen).title("Marker in Spain"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(origen));

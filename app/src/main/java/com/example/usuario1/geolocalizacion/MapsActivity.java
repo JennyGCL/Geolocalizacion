@@ -2,6 +2,8 @@ package com.example.usuario1.geolocalizacion;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,6 +22,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private Location localizacionActual;
@@ -46,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
+        goToPlace("Madrid");
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -92,6 +99,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }*/
     }
+
+    //Método que pasada una dirección saca la latitud y la longitud del lugar
+    private void goToPlace(String locationName){
+        Geocoder geoCoder = new Geocoder(this);
+        if(Geocoder.isPresent()){
+            try {
+                List<Address> direcciones = geoCoder.getFromLocationName(locationName, 1);
+                if(direcciones.size() == 0){
+                    Toast.makeText(this, "Lugar no encontrado", Toast.LENGTH_SHORT).show();
+                }
+                Address direccion = direcciones.get(0);
+                //Aquí habría que guardar estos datos en variables
+                System.out.println("Latitud: "+direccion.getLatitude()+" Longitud: "+direccion.getLongitude());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public void getLocation() {
         try {

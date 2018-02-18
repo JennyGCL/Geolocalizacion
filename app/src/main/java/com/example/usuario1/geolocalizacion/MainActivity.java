@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText et_origen;
     private EditText et_destino;
     private MarqueeView tv_marquesina;
+    private String origen;
+    private String destino;
     SQLiteDatabase baseDatos;
     ArrayList <Vehiculo>lista_vehiculos;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         btn_configuarar = (Button) findViewById(R.id.btn_configurar);
 
         et_origen = (EditText) findViewById(R.id.et_origen);
+        et_origen.setText("Localizacion Actual");
         et_destino = (EditText) findViewById(R.id.et_destino);
 
         tv_marquesina = (MarqueeView) findViewById(R.id.tv_marquesina);
@@ -70,8 +73,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void iniciarRuta(View v){
+        origen = et_origen.getText().toString();
+        destino = et_destino.getText().toString();
         Intent intent = new Intent(this, MapsActivity.class);
 
+        intent.putExtra("origen", origen);
+        intent.putExtra("destino", destino);
         startActivity(intent);
+
+
     }
 }

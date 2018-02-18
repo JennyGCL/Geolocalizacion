@@ -1,6 +1,7 @@
 package com.example.usuario1.geolocalizacion;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -32,7 +33,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double longitudInicial, latitudInicial;
     LocationListener locationListener;
     LocationManager locationManager;
-
+    private String origenIndicado;
+    private String destinoIndicado;
+    private LatLng destinoLatLng;
+    private LatLng origenLatLng;
+    private boolean isOrigenDiferente;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
+        Intent intent = getIntent();
+        origenIndicado = intent.getStringExtra("origen");
+        destinoIndicado = intent.getStringExtra("destino");
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -97,6 +105,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 longitudInicial = localizacionActual.getLongitude();
             }
         }*/
+
+
+
     }
 
     //Método que pasada una dirección saca la latitud y la longitud del lugar
@@ -110,7 +121,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 Address direccion = direcciones.get(0);
                 //Aquí habría que guardar estos datos en variables
-                System.out.println("Latitud: "+direccion.getLatitude()+" Longitud: "+direccion.getLongitude());
+                if(isOrigenDiferente){
+                    origenLatLng = new LatLng(direccion.getLatitude(), direccion.getLongitude());
+                    isOrigenDiferente = false;
+                }else{
+                    System.out.println("Latitud: "+direccion.getLatitude()+" Longitud: "+direccion.getLongitude());
+                    destinoLatLng = new LatLng(direccion.getLatitude(), direccion.getLongitude());
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -203,22 +220,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
         getLocation();
-        LatLng origen = new LatLng(localizacionActual.getLatitude(), localizacionActual.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(origen).title("Marker in Spain"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(origen));
 
+        if (origenIndicado.equals("Localizacion Actual")) {
+            origenLatLng = new LatLng(localizacionActual.getLatitude(), localizacionActual.getLongitude());
+        }else{
+            isOrigenDiferente = true;
+            goToPlace(origenIndicado);
+        }
 
-        LatLng destino = new LatLng(39.387133, -3.216995);
+        mMap.addMarker(new MarkerOptions().position(origenLatLng).title("Origen"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(origenLatLng));
+
+        //Obtenemos las coordenadas del destino
+        goToPlace(destinoIndicado);
 
         MarkerOptions marcadorDestino= new MarkerOptions();
-        marcadorDestino.position(destino);
-        marcadorDestino.title("Este es tu destino");
+        marcadorDestino.position(destinoLatLng);
+        marcadorDestino.title("Destino");
         marcadorDestino.icon(BitmapDescriptorFactory.defaultMarker()) ;
         mMap.addMarker(marcadorDestino);
 
-        String url = obtenerDireccionesURL(origen, destino);
+        String url = obtenerDireccionesURL(origenLatLng, destinoLatLng);
         DescargaRuta downloadTask = new DescargaRuta();
         downloadTask.setMapa(mMap);
         downloadTask.execute(url);

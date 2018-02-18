@@ -1,9 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.usuario1.geolocalizacion.Configuracion">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.usuario1.geolocalizacion.Configuracion"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/bGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/combustible"
+        android:layout_below="@+id/combustible"
+        android:layout_marginStart="14dp"
+        android:text="Button" />
+
+    <EditText
+        android:id="@+id/marca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="36dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/modelo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/marca"
+        android:layout_below="@+id/marca"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/consumo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/modelo"
+        android:layout_below="@+id/modelo"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/combustible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/consumo"
+        android:layout_below="@+id/consumo"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <ListView
+        android:id="@+id/lista_vehiculos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/bGuardar"
+        android:layout_marginTop="13dp" />
+
+    <TextView
+        android:id="@+id/tmarca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/marca"
+        android:layout_alignBottom="@+id/marca"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="33dp"
+        android:text="Marca:" />
+
+    <TextView
+        android:id="@+id/tmodelo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_alignTop="@+id/modelo"
+        android:text="Modelo:" />
+
+    <TextView
+        android:id="@+id/tconsumo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView8"
+        android:layout_below="@+id/modelo"
+        android:text="Media consumo:" />
+
+    <TextView
+        android:id="@+id/tcarburante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView9"
+        android:layout_below="@+id/consumo"
+        android:layout_marginStart="11dp"
+        android:text="Carburante:" />
+</RelativeLayout>

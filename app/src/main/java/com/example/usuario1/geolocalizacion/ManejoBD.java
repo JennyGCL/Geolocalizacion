@@ -4,16 +4,20 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 public class ManejoBD {
 
-    SQLiteDatabase baseDatos;
+   private SQLiteDatabase baseDatos;
     ArrayList<Vehiculo> lista_vehiculos;
     ArrayList<Ruta> lista_rutas;
     public ManejoBD(SQLiteDatabase baseDatos) {
         this.baseDatos = baseDatos;
+    }
+    public ManejoBD() {
+
     }
 
     /**
@@ -24,13 +28,13 @@ public class ManejoBD {
 
         try{
             //Sentencia sql para crear la tabla Vehiculos en caso de que no exista.
-            String sqlCrearTabla = "CREATE TABLE IF NOT EXISTS Vehiculos (Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            String sqlCrearTabla = "CREATE TABLE IF NOT EXISTS Vehiculos (Id INTEGER PRIMARY KEY," +
                                         "Marca VARCHAR(50), Modelo VARCHAR(200), Consumo REAL(3,1), Carburante VARCHAR(50));";
             //Ejecuta la sentencia.
             baseDatos.execSQL(sqlCrearTabla);
 
             //Sentencia sql para crear la tabla Rutas en caso de que no exista.
-            sqlCrearTabla =  "CREATE TABLE IF NOT EXISTS Rutas (Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            sqlCrearTabla =  "CREATE TABLE IF NOT EXISTS Rutas (Id INTEGER PRIMARY KEY," +
                     "IdVehiculo INTEGER,Origen VARCHAR(200), Destino VARCHAR(200), Km INTEGER, LitrosCombustible REAL(5,1),Precio REAL(5,3)," +
                     "Tiempo VARCHAR(100), FOREIGN KEY(IdVehiculo) REFERENCES Vehiculos(Id));";
             //Ejecuta la sentencia.
@@ -67,10 +71,9 @@ public class ManejoBD {
                 lista_vehiculos.add(vehiculo);
 
             } while(c.moveToNext());
-            for (int i = 0; i < lista_vehiculos.size() ; i++) {
-                Log.e("VEHICULO",lista_vehiculos.get(i).getMarca()+lista_vehiculos.get(i).getConsumo());
-            }
+
         }
+        c.close();
         return lista_vehiculos;
     }
 

@@ -1,10 +1,12 @@
 package com.example.usuario1.geolocalizacion;
 
+import java.io.Serializable;
+
 /**
  * Created by Vladimir on 17/02/2018.
  */
 
-public class Ruta {
+public class Ruta implements Serializable{
     private int id;
     private int idVehiculo;
     private String origen;

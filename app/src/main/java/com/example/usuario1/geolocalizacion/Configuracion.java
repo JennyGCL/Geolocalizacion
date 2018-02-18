@@ -66,11 +66,14 @@ public class Configuracion extends AppCompatActivity {
                     items.add(lista_vehiculos.get(1).getMarca()+" " +lista_vehiculos.get(1).getModelo()+ "     consumo: "
                             +lista_vehiculos.get(1).getConsumo()+" l/100km");
 
-
+                    marca.setText("");
+                    modelo.setText("");
+                    consumo.setText("");
+                    combustible.setText("");
                 }catch (Exception e){
 
                 }
-
+                lista.setAdapter(adapter);
 
 
             }

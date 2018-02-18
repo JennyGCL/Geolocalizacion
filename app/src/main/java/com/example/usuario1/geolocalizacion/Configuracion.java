@@ -1,18 +1,19 @@
 package com.example.usuario1.geolocalizacion;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.apache.commons.io.TaggedIOException;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,8 +25,11 @@ public class Configuracion extends AppCompatActivity {
     ArrayList<String> items = new ArrayList();
     TextView txt_uno,txt_dos;
     EditText marca,modelo,consumo,combustible;
+    int itemSeleccionado;
     int id=0;
+    int x;
     SQLiteDatabase baseDatos;
+    AlertDialog.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +57,7 @@ public class Configuracion extends AppCompatActivity {
         btn_guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int x = id +1;
+                x = id +1;
                 id++;
                 Log.e("Valor ID",String.valueOf(x));
                 try {
@@ -79,5 +83,40 @@ public class Configuracion extends AppCompatActivity {
 
             }
         });
+        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                itemSeleccionado = position+1;
+                mostrarDialogo();
+                return true;
+            }
+        });
+
+    }
+    private void mostrarDialogo() {
+        builder = new AlertDialog.Builder(this);
+        //Obliga a que se pulse sobre alguno de los botones para que se cierre el dialogo.
+        builder.setCancelable(false);
+        builder.setMessage("¿Quiere eliminar esta vehículo?")
+                .setTitle("¿Está seguro?")
+                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int itemId) {
+                                String sql = "Delete from Vehiculos where id=" + itemSeleccionado;
+                                baseDatos.execSQL(sql);
+                                lista_vehiculos.remove(itemSeleccionado);
+                                items.remove(itemSeleccionado);
+                                x--;
+                                lista.setAdapter(adapter);
+                                Toast.makeText(Configuracion.this, "Vehículo borrado!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.show();
     }
 }

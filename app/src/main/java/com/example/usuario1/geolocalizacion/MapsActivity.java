@@ -52,7 +52,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-        goToPlace("Madrid");
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override

@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
             baseDatos = this.openOrCreateDatabase("BDGeolocalizacion", MODE_PRIVATE, null);
             bd = new ManejoBD(baseDatos);
             bd.crearTablas();
-            Vehiculo v = new Vehiculo(1,"AUDI","A5",4.6,"Diésel");
-            bd.insertarVehiculo(v);
             lista_vehiculos = bd.obtenerDatosVehiculos();
             //Log.e("TAMAÑO",String.valueOf(lista_vehiculos.size()));
             //for (int i = 0; i < lista_vehiculos.size() ; i++) {

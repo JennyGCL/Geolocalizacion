@@ -86,7 +86,7 @@ public class Configuracion extends AppCompatActivity {
         lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                itemSeleccionado = position+1;
+                itemSeleccionado = position;
                 mostrarDialogo();
                 return true;
             }

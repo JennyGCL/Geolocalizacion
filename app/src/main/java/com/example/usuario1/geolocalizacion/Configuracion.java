@@ -49,6 +49,7 @@ public class Configuracion extends AppCompatActivity {
 
         //lista_vehiculos = (ArrayList<Vehiculo>) getIntent().getSerializableExtra("lista");
         lista_vehiculos = bd.obtenerDatosVehiculos();
+
          for (int i = 0; i < lista_vehiculos.size() ; i++) {
              items.add(lista_vehiculos.get(i).getMarca()+" " +lista_vehiculos.get(i).getModelo()+ "     consumo: "
                      +lista_vehiculos.get(i).getConsumo()+" l/100km");

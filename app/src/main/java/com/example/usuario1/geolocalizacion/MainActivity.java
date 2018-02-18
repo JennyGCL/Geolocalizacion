@@ -1,8 +1,10 @@
 package com.example.usuario1.geolocalizacion;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText et_origen;
     private EditText et_destino;
     private MarqueeView tv_marquesina;
+    SQLiteDatabase baseDatos;
+    ArrayList <Vehiculo>lista_vehiculos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,19 @@ public class MainActivity extends AppCompatActivity {
         precios.add("Gasoleo A: "+ precioGasoleo+"€");
         precios.add("Gasoleo A+: "+ precioGasoleoPlus+"€");
         tv_marquesina.startWithList(precios);
+
+        try {
+            lista_vehiculos = new ArrayList<Vehiculo>();
+            baseDatos = this.openOrCreateDatabase("BDGeolocalizacion", MODE_PRIVATE, null);
+            ManejoBD bd = new ManejoBD(baseDatos);
+            bd.crearTablas();
+            /*lista_vehiculos = bd.obtenerDatosVehiculos();
+            for (int i = 0; i < lista_vehiculos.size() ; i++) {
+                Log.e("VEHICULO",lista_vehiculos.get(i).getMarca()+lista_vehiculos.get(i).getConsumo());
+            }*/
+        }catch (Exception e){
+
+        }
     }
 
     public void OnClickConfiguarar (View view) {

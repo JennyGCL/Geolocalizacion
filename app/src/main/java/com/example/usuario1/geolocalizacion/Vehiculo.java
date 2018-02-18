@@ -22,7 +22,13 @@ public class Vehiculo {
         this.consumo = consumo;
         this.combustible = combustible;
     }
+    public Vehiculo( String marca, String modelo, double consumo, String combustible) {
 
+        this.marca = marca;
+        this.modelo = modelo;
+        this.consumo = consumo;
+        this.combustible = combustible;
+    }
     public int getId() {
         return id;
     }

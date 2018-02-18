@@ -16,33 +16,34 @@ public class ManejoBD {
         this.baseDatos = baseDatos;
     }
 
+    /**
+     * Método que crea las tablas de la base de datos BDGeolocalización.
+     * Tablas: Vehiculos, Rutas
+     */
     public  void crearTablas(){
 
         try{
             //Sentencia sql para crear la tabla Vehiculos en caso de que no exista.
-            String sqlCrearTabla = "CREATE TABLE IF NOT EXISTS Vehiculos (Id INTEGER PRIMARY KEY," +
+            String sqlCrearTabla = "CREATE TABLE IF NOT EXISTS Vehiculos (Id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                         "Marca VARCHAR(50), Modelo VARCHAR(200), Consumo REAL(3,1), Carburante VARCHAR(50));";
             //Ejecuta la sentencia.
             baseDatos.execSQL(sqlCrearTabla);
-            //String sql = "insert into Vehiculos values ('1','Audi','A5',6.4,'Diésel');";
-           //baseDatos.execSQL(sql);
-            Log.e("TABLA VEHICULO", "TABLA VEHICULO CREADA");
+
             //Sentencia sql para crear la tabla Rutas en caso de que no exista.
-            sqlCrearTabla =  "CREATE TABLE IF NOT EXISTS Rutas (Id INTEGER PRIMARY KEY," +
+            sqlCrearTabla =  "CREATE TABLE IF NOT EXISTS Rutas (Id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "IdVehiculo INTEGER,Origen VARCHAR(200), Destino VARCHAR(200), Km INTEGER, LitrosCombustible REAL(5,1),Precio REAL(5,3)," +
-                    "Tiempo VARCHAR(100), FOREIGN KEY(IdVehiculo) REFERENCES Vehiculos(Id);";
+                    "Tiempo VARCHAR(100), FOREIGN KEY(IdVehiculo) REFERENCES Vehiculos(Id));";
             //Ejecuta la sentencia.
             baseDatos.execSQL(sqlCrearTabla);
-            Log.e("TABLA RUTAS", "TABLA RUTAS CREADA");
-
         }catch(Exception e){
-
+            Log.e("Error",e.toString());
         }
-
-
-
-
     }
+
+    /**
+     * Método que recorre la tabla Vehiculos y almacena los datos en una lista.
+     * @return Retorna una lista con objetos Vehiculo.
+     */
     public ArrayList obtenerDatosVehiculos(){
 
         lista_vehiculos = new ArrayList<Vehiculo>();
@@ -50,7 +51,7 @@ public class ManejoBD {
         String marca,modelo,combustible;
         double consumo;
         //Cursor con todos los registros de la tabla vehiculos
-        Cursor c = baseDatos.rawQuery(" SELECT * FROM Vehiculos", null);
+        Cursor c = baseDatos.rawQuery(" SELECT * FROM Vehiculos;", null);
 
         //Comprueba que hay mínimo un registro en el cursor para ser leido
         if (c.moveToFirst()) {
@@ -66,10 +67,17 @@ public class ManejoBD {
                 lista_vehiculos.add(vehiculo);
 
             } while(c.moveToNext());
-
+            for (int i = 0; i < lista_vehiculos.size() ; i++) {
+                Log.e("VEHICULO",lista_vehiculos.get(i).getMarca()+lista_vehiculos.get(i).getConsumo());
+            }
         }
         return lista_vehiculos;
     }
+
+    /**
+     * Método que recorre la tabla Rutas y almacena los datos en una lista.
+     * @return Retorna una lista con objetos Ruta.
+     */
     public ArrayList obtenerDatosRuta(){
         lista_rutas = new ArrayList<Ruta>();
         int id,idVehiculo,km;
@@ -98,5 +106,76 @@ public class ManejoBD {
 
         }
         return lista_rutas;
+    }
+
+    /**
+     * Método al que se le pasa por parámetro un Vehiculo para ser insertado en la base de datos.
+     * @param vehiculo
+     */
+    public void insertarVehiculo(Vehiculo vehiculo){
+        try {
+
+            String sql = "insert into Vehiculos values (" + vehiculo.getId() + ",'" + vehiculo.getMarca() +
+                    "','" + vehiculo.getModelo() + "'," + vehiculo.getConsumo() + ",'" + vehiculo.getCombustible() +  "');";
+            baseDatos.execSQL(sql);
+        }catch(Exception e){
+
+        }
+
+    }
+
+    /**
+     * Método al que se le pasa por parámetro una Ruta para ser insertada en la base de datos.
+     * @param ruta
+     */
+    public void insertarRuta(Ruta ruta){
+        try {
+
+            String sql = "insert into Rutas values (" + ruta.getId() + "," + ruta.getIdVehiculo() +
+                    ",'" + ruta.getOrigen() + "','" + ruta.getDestino() + "',"  + ruta.getKm() + ","
+                    + ruta.getLcombustible() + ","  + ruta.getPrecio() + ",'"+ ruta.getTiempo() +  "');";
+            baseDatos.execSQL(sql);
+        }catch(Exception e){
+
+        }
+
+    }
+
+    /**
+     * Obtiene el último Id de la tabla Vehiculos.
+     * @return
+     */
+    public int obtenerIdVehiculo(){
+        int id = 0;
+        //Cursor con todos los registros de la tabla Rutas
+        Cursor c = baseDatos.rawQuery(" SELECT * FROM Vehiculos", null);
+
+        //Comprueba que hay mínimo un registro en el cursor para ser leido
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                id =c.getInt(0);
+            } while(c.moveToNext());
+        }
+        return id;
+    }
+
+    /**
+     * Obtiene el último Id de la tabla Rutas.
+     * @return
+     */
+    public int obtenerIdRuta(){
+        int id = 0;
+        //Cursor con todos los registros de la tabla Rutas
+        Cursor c = baseDatos.rawQuery(" SELECT * FROM Rutas", null);
+
+        //Comprueba que hay mínimo un registro en el cursor para ser leido
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                id =c.getInt(0);
+            } while(c.moveToNext());
+        }
+        return id;
     }
 }

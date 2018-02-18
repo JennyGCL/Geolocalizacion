@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.security.Provider;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -38,6 +40,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng destinoLatLng;
     private LatLng origenLatLng;
     private boolean isOrigenDiferente;
+    private TextView txtConsumo;
+    private TextView txtDistancia;
+    private double consumoCoche;
+    private int numPasajeros;
+    private boolean aireAcondicionado;
+    private boolean equipaje;
+    private boolean luces;
+    private boolean idayVuelta;
+    float distance;
+    private double consumoTotal;
+    private TextView txtcosteTotal;
+    private double costeGasolina;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +61,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        txtConsumo = findViewById(R.id.txt_consumo);
+        txtDistancia = findViewById(R.id.txt_distancia);
+        txtcosteTotal = findViewById(R.id.txt_coste);
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -58,14 +77,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         Intent intent = getIntent();
+        aireAcondicionado = intent.getBooleanExtra("aire", false);
+        luces = intent.getBooleanExtra("luces", false);
+        equipaje = intent.getBooleanExtra("equipaje", false);
+        numPasajeros = intent.getIntExtra("numPasajeros", 1);
         origenIndicado = intent.getStringExtra("origen");
         destinoIndicado = intent.getStringExtra("destino");
+        idayVuelta = intent.getBooleanExtra("idayvuelta", true);
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 localizacionActual = location;
                 System.out.println(location);
+
             }
 
             @Override
@@ -240,17 +265,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         marcadorDestino.title("Destino");
         marcadorDestino.icon(BitmapDescriptorFactory.defaultMarker()) ;
         mMap.addMarker(marcadorDestino);
+        mMap.setMinZoomPreference(8);
+//        float [] distancia = new float[10];
+//        Location.distanceBetween(origenLatLng.latitude, origenLatLng.longitude, destinoLatLng.latitude, destinoLatLng.longitude, distancia);
 
         String url = obtenerDireccionesURL(origenLatLng, destinoLatLng);
         DescargaRuta downloadTask = new DescargaRuta();
         downloadTask.setMapa(mMap);
         downloadTask.execute(url);
 
+        //Para obtener la distancia entre dos puntos
+        Location locationA = new Location("punto A");
+        locationA.setLatitude(origenLatLng.latitude);
+        locationA.setLongitude(origenLatLng.longitude);
+        Location locationB = new Location("punto B");
+        locationB.setLatitude(destinoLatLng.latitude);
+        locationB.setLongitude(destinoLatLng.longitude);
+        distance = locationA.distanceTo(locationB);
+        distance = (float) (distance + distance * 0.3)/1000;
+
+
+
+        calcularConsumo();
     }
 
 
 
+    private void calcularConsumo(){
+        double sumatorioExtras = 0;
+        consumoCoche = 5.5;
+        costeGasolina = 1.2;
 
+        if(idayVuelta){
+            distance = distance * 2;
+        }
+
+        //Obtenemos el consumo a partir de la distancia y el consumo del coche a los 100km
+        consumoTotal = (distance * consumoCoche)/100;
+        //Si lleva aire acondicionado, equipaje o luces encendidas le sumamos precio al total
+        if(aireAcondicionado){
+            sumatorioExtras = sumatorioExtras + consumoTotal * 0.08;
+        }
+        if(equipaje){
+            sumatorioExtras = sumatorioExtras + consumoTotal * 0.04;
+        }
+        if(luces){
+            sumatorioExtras = sumatorioExtras + consumoTotal * 0.03;
+        }
+
+        //Incrementamos el precio segun el numero de pasajeros
+        sumatorioExtras = sumatorioExtras + (consumoTotal * numPasajeros/100);
+        consumoTotal = consumoTotal + sumatorioExtras;
+
+        txtDistancia.setText("Distancia: "+distance+" Km");
+
+        //Redondeamos el resultado para que no nos salga con muchos decimales
+        consumoTotal = (double) Math.round(consumoTotal * 100) / 100;
+        txtConsumo.setText("Consumo: "+consumoTotal +" L");
+
+        //Para calcular el coste en €
+        double costeTotal= consumoTotal * costeGasolina;
+        costeTotal = (double) Math.round(costeTotal * 100) / 100;
+        txtcosteTotal.setText("Coste del viaje: "+costeTotal+"€");
+
+
+    }
 
 
     private String obtenerDireccionesURL(LatLng origin,LatLng dest){

@@ -27,9 +27,10 @@ public class Configuracion extends AppCompatActivity {
     EditText marca,modelo,consumo,combustible;
     int itemSeleccionado;
     int id=0;
-    int x;
+    int x=0;
     SQLiteDatabase baseDatos;
     AlertDialog.Builder builder;
+    ManejoBD bd = new ManejoBD();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +45,10 @@ public class Configuracion extends AppCompatActivity {
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, items);
         baseDatos = this.openOrCreateDatabase("BDGeolocalizacion", MODE_PRIVATE, null);
-        lista_vehiculos = (ArrayList<Vehiculo>) getIntent().getSerializableExtra("lista");
+        ManejoBD bd = new ManejoBD(baseDatos);
 
+        //lista_vehiculos = (ArrayList<Vehiculo>) getIntent().getSerializableExtra("lista");
+        lista_vehiculos = bd.obtenerDatosVehiculos();
          for (int i = 0; i < lista_vehiculos.size() ; i++) {
              items.add(lista_vehiculos.get(i).getMarca()+" " +lista_vehiculos.get(i).getModelo()+ "     consumo: "
                      +lista_vehiculos.get(i).getConsumo()+" l/100km");
@@ -97,12 +100,13 @@ public class Configuracion extends AppCompatActivity {
         builder = new AlertDialog.Builder(this);
         //Obliga a que se pulse sobre alguno de los botones para que se cierre el dialogo.
         builder.setCancelable(false);
-        builder.setMessage("¿Quiere eliminar esta vehículo?")
+        builder.setMessage("¿Quiere eliminar este vehículo?")
                 .setTitle("¿Está seguro?")
                 .setPositiveButton("SI", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int itemId) {
-                                String sql = "Delete from Vehiculos where id=" + itemSeleccionado;
+                                int Id = lista_vehiculos.get(itemSeleccionado).getId();
+                                String sql = "Delete from Vehiculos where Id=" + Id;
                                 baseDatos.execSQL(sql);
                                 lista_vehiculos.remove(itemSeleccionado);
                                 items.remove(itemSeleccionado);

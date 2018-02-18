@@ -82,6 +82,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         equipaje = intent.getBooleanExtra("equipaje", false);
         numPasajeros = intent.getIntExtra("numPasajeros", 1);
         origenIndicado = intent.getStringExtra("origen");
+        consumoCoche = intent.getDoubleExtra("consumo", 5);
+        costeGasolina = intent.getDoubleExtra("combustible", 1.1);
         destinoIndicado = intent.getStringExtra("destino");
         idayVuelta = intent.getBooleanExtra("idayvuelta", true);
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -293,8 +295,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void calcularConsumo(){
         double sumatorioExtras = 0;
-        consumoCoche = 5.5;
-        costeGasolina = 1.2;
 
         if(idayVuelta){
             distance = distance * 2;

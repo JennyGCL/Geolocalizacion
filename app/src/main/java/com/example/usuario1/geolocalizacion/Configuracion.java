@@ -1,6 +1,7 @@
 package com.example.usuario1.geolocalizacion;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -96,6 +97,18 @@ public class Configuracion extends AppCompatActivity {
             }
         });
 
+
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = getIntent();
+                intent.putExtra("combustible", lista_vehiculos.get(i).getCombustible());
+                intent.putExtra("consumo", lista_vehiculos.get(i).getConsumo());
+                setResult(RESULT_OK, intent);
+
+                finish();
+            }
+        });
     }
     private void mostrarDialogo() {
         builder = new AlertDialog.Builder(this);
@@ -112,6 +125,7 @@ public class Configuracion extends AppCompatActivity {
                                 lista_vehiculos.remove(itemSeleccionado);
                                 items.remove(itemSeleccionado);
                                 x--;
+                                adapter = new ArrayAdapter<String>(Configuracion.this, android.R.layout.simple_expandable_list_item_1, items);
                                 lista.setAdapter(adapter);
                                 Toast.makeText(Configuracion.this, "Vehículo borrado!", Toast.LENGTH_LONG).show();
                             }

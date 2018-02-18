@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private String destino;
     SQLiteDatabase baseDatos;
     ArrayList <Vehiculo>lista_vehiculos;
-
+    private double consumo;
+    private String combustible;
     private CheckBox checkAireSi;
     private CheckBox checkEquipajeSi;
     private CheckBox checkLucesSi;
@@ -87,12 +88,26 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, Configuracion.class);
                 //intent.putExtra("lista",lista_vehiculos );
-                startActivity(intent);
+                startActivityForResult(intent, 0);
 
 
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 0) {
+
+            if (resultCode == RESULT_OK) {
+                combustible = data.getStringExtra("combustible");
+                consumo = data.getDoubleExtra("consumo", 5);
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onClickConfigurar(View view) {
@@ -104,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void iniciarRuta(View v){
+        boolean valido = true;
         origen = et_origen.getText().toString();
         destino = et_destino.getText().toString();
         Intent intent = new Intent(this, MapsActivity.class);
@@ -146,6 +162,31 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        startActivity(intent);
+
+        //Enviamos el consumo y el precio del combustible
+        intent.putExtra("consumo", consumo);
+
+
+        if(combustible.equals("")){
+            valido = false;
+        }else{
+            valido = true;
+            if(combustible.equals("Gasolina")){
+                intent.putExtra("combustible", precioGasolina);
+            }else if(combustible.equals("Gasoleo")){
+                intent.putExtra("combustible", precioGasoleo);
+            }else{
+                intent.putExtra("combustible", precioGasoleoPlus);
+            }
+        }
+
+
+
+
+        if (valido){
+            startActivity(intent);
+        }else{
+            Toast.makeText(this,"Debe seleccionar un vehiculo en la opcion de configurar vehiculo", Toast.LENGTH_LONG).show();
+        }
     }
 }

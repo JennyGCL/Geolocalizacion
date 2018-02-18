@@ -54,6 +54,7 @@ public class Configuracion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int x = id +1;
+                id++;
                 Log.e("Valor ID",String.valueOf(x));
                 try {
                     Vehiculo vehiculo = new Vehiculo(x,marca.getText().toString(),modelo.getText().toString(),
@@ -63,15 +64,15 @@ public class Configuracion extends AppCompatActivity {
                             "','" + vehiculo.getModelo() + "'," + vehiculo.getConsumo() + ",'" + vehiculo.getCombustible() +  "');";
                     baseDatos.execSQL(sql);
                     lista_vehiculos.add(vehiculo);
-                    items.add(lista_vehiculos.get(1).getMarca()+" " +lista_vehiculos.get(1).getModelo()+ "     consumo: "
-                            +lista_vehiculos.get(1).getConsumo()+" l/100km");
+                    items.add(lista_vehiculos.get(x - 1).getMarca()+" " +lista_vehiculos.get(x - 1).getModelo()+ "     consumo: "
+                            +lista_vehiculos.get(x - 1).getConsumo()+" l/100km");
 
                     marca.setText("");
                     modelo.setText("");
                     consumo.setText("");
                     combustible.setText("");
                 }catch (Exception e){
-
+                    System.out.println(e.toString());
                 }
                 lista.setAdapter(adapter);
 

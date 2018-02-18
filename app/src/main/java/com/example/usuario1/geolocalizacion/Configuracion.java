@@ -24,8 +24,7 @@ public class Configuracion extends AppCompatActivity {
     ArrayList<String> items = new ArrayList();
     TextView txt_uno,txt_dos;
     EditText marca,modelo,consumo,combustible;
-    int id;
-    ManejoBD bd;
+    int id=0;
     SQLiteDatabase baseDatos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +38,15 @@ public class Configuracion extends AppCompatActivity {
         combustible = (EditText)findViewById(R.id.combustible);
         btn_guardar = (Button)findViewById(R.id.bGuardar);
 
-
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, items);
         baseDatos = this.openOrCreateDatabase("BDGeolocalizacion", MODE_PRIVATE, null);
-        bd = new ManejoBD();
+        lista_vehiculos = (ArrayList<Vehiculo>) getIntent().getSerializableExtra("lista");
 
-                lista_vehiculos = (ArrayList<Vehiculo>) getIntent().getSerializableExtra("lista");
-        //int x = bd.obtenerIdVehiculo();
-       // Log.e("ID",String.valueOf(x));
          for (int i = 0; i < lista_vehiculos.size() ; i++) {
-
              items.add(lista_vehiculos.get(i).getMarca()+" " +lista_vehiculos.get(i).getModelo()+ "     consumo: "
                      +lista_vehiculos.get(i).getConsumo()+" l/100km");
              id++;
          }
-
-       adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, items);
-
-
-
-
 
         lista.setAdapter(adapter);
 
@@ -70,24 +59,17 @@ public class Configuracion extends AppCompatActivity {
                     Vehiculo vehiculo = new Vehiculo(x,marca.getText().toString(),modelo.getText().toString(),
                             Double.parseDouble(consumo.getText().toString()),combustible.getText().toString());
 
-
                     String sql = "insert into Vehiculos values (" + vehiculo.getId() + ",'" + vehiculo.getMarca() +
                             "','" + vehiculo.getModelo() + "'," + vehiculo.getConsumo() + ",'" + vehiculo.getCombustible() +  "');";
                     baseDatos.execSQL(sql);
+                    lista_vehiculos.add(vehiculo);
+                    items.add(lista_vehiculos.get(1).getMarca()+" " +lista_vehiculos.get(1).getModelo()+ "     consumo: "
+                            +lista_vehiculos.get(1).getConsumo()+" l/100km");
 
 
-
-                   // baseDatos.insertarVehiculo(vehiculo);
-                    Log.e("BIEEEEEN",String.valueOf(x));
                 }catch (Exception e){
-                    Log.e("ERROR En INSERTAR","ERROOOOOOOOR");
+
                 }
-
-
-                /*Intent intent  = new Intent(Configuracion.this,MainActivity.class);
-                intent.putExtra("objeto",vehiculo);
-                setResult(RESULT_OK,intent);
-                finish();*/
 
 
 

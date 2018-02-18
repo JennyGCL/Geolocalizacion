@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
             baseDatos = this.openOrCreateDatabase("BDGeolocalizacion", MODE_PRIVATE, null);
              bd = new ManejoBD(baseDatos);
             bd.crearTablas();
-            Vehiculo v = new Vehiculo(1,"AUDI","A5",4.6,"Diésel");
-            bd.insertarVehiculo(v);
             lista_vehiculos = bd.obtenerDatosVehiculos();
             Log.e("TAMAÑO",String.valueOf(lista_vehiculos.size()));
             for (int i = 0; i < lista_vehiculos.size() ; i++) {
@@ -72,15 +70,26 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        btn_configuarar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this, Configuracion.class);
+                intent.putExtra("lista",lista_vehiculos );
+                startActivity(intent);
+
+
+            }
+        });
     }
 
-    public void OnClickConfiguarar (View view) {
-        Intent intent = new Intent(this, Configuracion.class);
+   /* public void OnClickConfiguarar (View view) {
+        Intent intent = new Intent(MainActivity.this, Configuracion.class);
         intent.putExtra("lista",lista_vehiculos );
         startActivity(intent);
 
 
-    }
+    }*/
 
     public void iniciarRuta(View v){
         origen = et_origen.getText().toString();

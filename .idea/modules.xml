@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Geolocalizacion.iml" filepath="$PROJECT_DIR$/Geolocalizacion.iml" />
-      <module fileurl="file://C:\PMDM\Geolocalizacion\Geolocalizacion.iml" filepath="C:\PMDM\Geolocalizacion\Geolocalizacion.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\PMDM\Geolocalizacion\app\app.iml" filepath="C:\PMDM\Geolocalizacion\app\app.iml" />
     </modules>
   </component>
 </project>

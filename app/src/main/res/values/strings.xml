@@ -4,4 +4,12 @@
     <string name="configurar_veh_culo">Configurar Vehículo</string>
     <string name="configurar_ruta">Configurar Ruta</string>
     <string name="title_activity_maps">Map</string>
+    <string name="guardar">Guardar</string>
+    <string name="marca">Marca:</string>
+    <string name="modelo">Modelo:</string>
+    <string name="media_consumo">Media consumo:</string>
+    <string name="carburante">Carburante:</string>
+    <string name="distancia">Distancia:</string>
+    <string name="consumo">Consumo:</string>
+    <string name="coste">Coste:</string>
 </resources>

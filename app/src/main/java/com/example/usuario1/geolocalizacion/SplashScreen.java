@@ -28,7 +28,7 @@ public class SplashScreen extends AppCompatActivity {
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         progressBar.setVisibility(progressBar.VISIBLE);
 
-        //Set GIFImageView resource
+        //Obtenemos la imágen de la animación, contenida en assets
         try{
             InputStream inputStream = getAssets().open("icon-2-fixed.gif");
             byte[] bytes = IOUtils.toByteArray(inputStream);

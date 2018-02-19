@@ -20,7 +20,8 @@
         android:layout_below="@+id/map"
         android:layout_marginStart="23dp"
         android:layout_marginTop="19dp"
-        android:text="Distancia: " />
+        android:text="@string/distancia"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/txt_consumo"
@@ -29,7 +30,8 @@
         android:layout_alignStart="@+id/txt_distancia"
         android:layout_below="@+id/txt_distancia"
         android:layout_marginTop="24dp"
-        android:text="Consumo:" />
+        android:text="@string/consumo"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/txt_coste"
@@ -38,5 +40,6 @@
         android:layout_alignStart="@+id/txt_consumo"
         android:layout_below="@+id/txt_consumo"
         android:layout_marginTop="18dp"
-        android:text="Coste: " />
+        android:text="@string/coste"
+        android:textStyle="bold"/>
 </RelativeLayout>

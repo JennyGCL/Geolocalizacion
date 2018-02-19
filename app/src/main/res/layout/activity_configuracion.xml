@@ -16,7 +16,7 @@
         android:layout_marginTop="12dp"
         android:background="@color/colorPrimaryDark"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="Guardar"
+        android:text="@string/guardar"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold" />
 
@@ -79,7 +79,7 @@
         android:layout_alignBaseline="@+id/marca"
         android:layout_alignBottom="@+id/marca"
         android:layout_alignEnd="@+id/tmodelo"
-        android:text="Marca:"
+        android:text="@string/marca"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -91,7 +91,7 @@
         android:layout_alignBaseline="@+id/modelo"
         android:layout_alignBottom="@+id/modelo"
         android:layout_alignEnd="@+id/tconsumo"
-        android:text="Modelo:"
+        android:text="@string/modelo"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -103,7 +103,7 @@
         android:layout_below="@+id/modelo"
         android:layout_marginTop="23dp"
         android:layout_toStartOf="@+id/consumo"
-        android:text="Media consumo:"
+        android:text="@string/media_consumo"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -112,11 +112,11 @@
         android:id="@+id/tcarburante"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/combustible"
-        android:layout_toStartOf="@+id/combustible"
-        android:text="Carburante:"
+        android:text="@string/carburante"
         android:textAlignment="textStart"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignBaseline="@+id/combustible"
+        android:layout_alignBottom="@+id/combustible" />
 </RelativeLayout>

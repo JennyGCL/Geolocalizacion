@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Geolocalizacion.iml" filepath="$PROJECT_DIR$/Geolocalizacion.iml" />
+      <module fileurl="file://C:\Geolocalizacion\Geolocalizacion.iml" filepath="C:\Geolocalizacion\Geolocalizacion.iml" />
       <module fileurl="file://C:\Users\Vladimir\Desktop\Geolocalizacion\Geolocalizacion.iml" filepath="C:\Users\Vladimir\Desktop\Geolocalizacion\Geolocalizacion.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Geolocalizacion\app\app.iml" filepath="C:\Geolocalizacion\app\app.iml" />
       <module fileurl="file://C:\Users\Vladimir\Desktop\Geolocalizacion\app\app.iml" filepath="C:\Users\Vladimir\Desktop\Geolocalizacion\app\app.iml" />
     </modules>
   </component>

@@ -110,14 +110,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void onClickConfigurar(View view) {
-        Intent intent = new Intent(this, Configuracion.class);
-        intent.putExtra("lista",lista_vehiculos );
-        startActivity(intent);
-
-
-    }
-
     public void iniciarRuta(View v){
         boolean valido = true;
         origen = et_origen.getText().toString();
@@ -179,9 +171,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("combustible", precioGasoleoPlus);
             }
         }
-
-
-
 
         if (valido){
             startActivity(intent);

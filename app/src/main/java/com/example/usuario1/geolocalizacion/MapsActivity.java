@@ -286,8 +286,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         distance = locationA.distanceTo(locationB);
         distance = (float) (distance + distance * 0.3)/1000;
 
-
-
         calcularConsumo();
     }
 

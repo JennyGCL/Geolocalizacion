@@ -112,11 +112,12 @@
         android:id="@+id/tcarburante"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/carburante"
-        android:textAlignment="textStart"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        android:textStyle="bold"
         android:layout_alignBaseline="@+id/combustible"
-        android:layout_alignBottom="@+id/combustible" />
+        android:layout_alignBottom="@+id/combustible"
+        android:layout_toStartOf="@+id/combustible"
+        android:text="@string/carburante"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
 </RelativeLayout>

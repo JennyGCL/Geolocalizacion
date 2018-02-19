@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase baseDatos;
     ArrayList <Vehiculo>lista_vehiculos;
     private double consumo;
-    private String combustible;
+    private String combustible = "";
     private CheckBox checkAireSi;
     private CheckBox checkEquipajeSi;
     private CheckBox checkLucesSi;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         checkEquipajeSi = findViewById(R.id.check_equipaje);
         checkLucesSi = findViewById(R.id.check_luces);
         pasajeros = findViewById(R.id.txt_numPasajeros);
-
+        pasajeros.setText("1");
         List<String>precios= new ArrayList<String>();
         precios.add("Gasolina: "+precioGasolina+"€");
         precios.add("Gasoleo A: "+ precioGasoleo+"€");

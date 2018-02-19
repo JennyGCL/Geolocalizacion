@@ -315,6 +315,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sumatorioExtras = sumatorioExtras + (consumoTotal * numPasajeros/100);
         consumoTotal = consumoTotal + sumatorioExtras;
 
+        distance = (float) (Math.round(distance * 100) / 100);
         txtDistancia.setText("Distancia: "+distance+" Km");
 
         //Redondeamos el resultado para que no nos salga con muchos decimales
